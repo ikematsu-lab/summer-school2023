@@ -26,7 +26,7 @@ COPY users.txt /tmp/
 
 # create users
 
-RUN  user="jupyterhub_admin" && \
+RUN user="jupyterhub_admin" && \
      pw="password-0" && \
      useradd -m $user && \
      echo "${user}:${pw}" | chpasswd && \
