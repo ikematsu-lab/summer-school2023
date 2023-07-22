@@ -1,39 +1,36 @@
 FROM ubuntu:20.04
 
-ENV PATH ~/miniconda3/bin:$PATH
-ENV DEBIAN_FRONTEND=noninteractive
+SHELL ["/bin/bash", "-c"]
 
-RUN apt update -y && apt install -y \
- build-essential \
- bzip2 \
- wget \
- cmake \
- git \
- gcc \
- vim \
- make && apt clean
+COPY jupyterhub_config.py /
 
-RUN wget --quiet https://repo.anaconda.com/miniconda/Miniconda3-py310_23.5.2-0-Linux-x86_64.sh -O ~/Miniconda.sh && \
- /bin/bash ~/Miniconda.sh -b -p ~/miniconda3 && \
- rm ~/Miniconda.sh && \
- echo ". ~/miniconda3/etc/profile.d/conda.sh" >> ~/.bashrc && \
- echo "conda activate base" >> ~/.bashrc
+# install mamba
 
-RUN ~/miniconda3/bin/conda install -c conda-forge mamba -yq && ~/miniconda3/bin/mamba clean -a -y
+RUN apt update
+RUN apt install -y wget
+RUN wget https://github.com/conda-forge/miniforge/releases/latest/download/Mambaforge-Linux-x86_64.sh
+RUN bash Mambaforge-Linux-x86_64.sh -bup /opt/mambaforge
 
+# install packages
 
-RUN ~/miniconda3/bin/mamba install jupyterhub -y
-RUN ~/miniconda3/bin/mamba install notebook -y
+RUN source /opt/mambaforge/etc/profile.d/conda.sh && \
+    conda init && \
+    source ~/.bashrc && \
+    conda create -y -n jupyterhub39 python=3.9 && \
+    conda activate jupyterhub39 && \
+    mamba install -y -c conda-forge jupyterhub jupyterlab notebook jupyter_client && \
+    mamba install -y -c bioconda mafft fasttree
 
-RUN ~/miniconda3/bin/mamba install -c bioconda mafft -y
-RUN ~/miniconda3/bin/mamba install -c bioconda fasttree -y
+COPY make_users.sh /tmp/
+COPY users.txt /tmp/
 
+# create users
 
-RUN mkdir -p /opt/notebooks
+RUN  user="jupyterhub_admin" && \
+     pw="password-0" && \
+     useradd -m $user && \
+     echo "${user}:${pw}" | chpasswd && \
+     mkdir -p -m 777 /home/${user}/notebook && \
+     chown ${user}: /home/${user}/notebook
 
-#COPY ./config/jupyter_notebook_config.py /tmp/
-COPY ./config/jupyterhub_config.py /tmp/
-COPY ./users.txt /tmp/
-
-Shell ["/bin/bash", "-c"]
-WORKDIR /opt/notebooks
+RUN bash /tmp/make_users.sh
