@@ -1,0 +1,4 @@
+/home/ikematsu/workspace/summer-school2023/donwload/fasta/GU170821.1.fasta_fix.promer.contigs_with_ends.fa /home/ikematsu/.mambaforge/envs/summer/lib/python3.10/site-packages/circlator/data/dnaA.fasta
+PROMER
+
+[S1]	[E1]	[S2]	[E2]	[LEN 1]	[LEN 2]	[% IDY]	[% SIM]	[% STP]	[LEN R]	[LEN Q]	[FRM]	[TAGS]
