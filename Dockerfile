@@ -2,7 +2,7 @@ FROM ubuntu:20.04
 
 SHELL ["/bin/bash", "-c"]
 
-COPY jupyterhub_config.py /
+COPY scripts/jupyterhub_config.py /
 
 # install mamba
 
@@ -21,8 +21,10 @@ RUN source /opt/mambaforge/etc/profile.d/conda.sh && \
     mamba install -y -c conda-forge jupyterhub jupyterlab notebook jupyter_client && \
     mamba install -y -c bioconda mafft fasttree circlator
 
-COPY make_users.sh /tmp/
-COPY users.txt /tmp/
+COPY scripts/make_users.sh /tmp/
+COPY scripts/users.txt /tmp/
+COPY scripts/start_jupyter.sh /tmp/
+COPY scripts/handouts.sh /tmp/
 
 # create users
 
