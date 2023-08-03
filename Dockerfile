@@ -19,7 +19,7 @@ RUN source /opt/mambaforge/etc/profile.d/conda.sh && \
     conda create -y -n jupyterhub39 python=3.9 && \
     conda activate jupyterhub39 && \
     mamba install -y -c conda-forge jupyterhub jupyterlab notebook jupyter_client && \
-    mamba install -y -c bioconda mafft fasttree circlator
+    mamba install -y -c bioconda mafft fasttree
 
 COPY scripts/make_users.sh /tmp/
 COPY scripts/users.txt /tmp/
@@ -36,3 +36,4 @@ RUN user="jupyterhub_admin" && \
      chown ${user}: /home/${user}/notebook
 
 RUN bash /tmp/make_users.sh
+#RUN bash /tmp/handouts.sh
