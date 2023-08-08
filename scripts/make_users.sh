@@ -10,4 +10,5 @@ while read user; do
   echo "${user}:${pw}" | chpasswd
   mkdir -p -m 777 /home/${user}/notebook
   chown ${user}: /home/${user}/notebook
+  echo "screenfetch" >> /home/${user}/.bashrc
 done < /tmp/users.txt
