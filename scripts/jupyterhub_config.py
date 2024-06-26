@@ -1,5 +1,5 @@
 c.Spawner.default_url = '/lab'
-c.Spawner.notebook_dir = '~/notebook'
+c.Spawner.notebook_dir = '~/'
 c.Authenticator.admin_users = {'jupyterhub_admin'}
 
 with open("/tmp/users.txt" ,"r") as f:
