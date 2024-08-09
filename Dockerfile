@@ -25,6 +25,7 @@ COPY scripts/make_users.sh /tmp/
 COPY scripts/users.txt /tmp/
 COPY scripts/start_jupyter.sh /tmp/
 COPY scripts/handouts.sh /tmp/
+COPY scripts/handout_fasta_dir.sh /tmp/
 
 # create users
 
